@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harvey AI Legal Workload Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Calculator Section -->
+    <div class="calculator">
+      <img src="harvey-logo.png" alt="Harvey AI" class="logo">
+      <h1>Legal Workload Calculator</h1>
+      <p class="subtitle">Discover how much time and money your legal team can save with Harvey AI</p>
+
+      <form id="calculatorForm">
+        <label for="numLawyers">Number of Lawyers on the Team</label>
+        <input type="number" id="numLawyers" placeholder="10" required>
+
+        <label for="hourlyRate">Average Hourly Billing Rate (USD)</label>
+        <input type="number" id="hourlyRate" placeholder="200" required>
+
+        <label for="hoursPerWeek">Hours Spent on Repetitive Tasks per Lawyer per Week</label>
+        <input type="number" id="hoursPerWeek" placeholder="10" required>
+
+        <label for="efficiencyGain">Estimated Efficiency Gain with Harvey AI (%)</label>
+        <input type="number" id="efficiencyGain" placeholder="30" required>
+
+        <button type="button" id="calculateButton">Calculate Savings</button>
+      </form>
+
+      <p id="error-message" class="error-message"></p>
+
+      <div id="results"></div>
+
+      <!-- Footer -->
+      <p class="footer-text">Created by Shane Swiderek</p>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-box">
+      <h2>Harvey AI Legal Workload Calculator – How It Works 💡</h2>
+      <p>This calculator helps legal teams estimate time, cost savings, and capacity gains by automating repetitive legal tasks with Harvey AI.</p>
+      <hr>
+
+      <h3>How to Use:</h3>
+      <ol>
+        <li><strong>Enter Your Team Details</strong> 📋<br>Provide the number of lawyers on your team, their average hourly billing rate, and the average hours spent on repetitive tasks.</li>
+        <li><strong>Adjust the Efficiency Gain</strong> 🚀<br>Harvey AI typically improves efficiency by 20-50% depending on the task. Enter your estimated percentage gain.</li>
+        <li><strong>See Your Savings</strong> 📊<br>Get insights on time saved, cost savings, and capacity gains.</li>
+      </ol>
+      <hr>
+
+      <h3>How to Interpret the Results:</h3>
+      <ul>
+        <li><strong>Annual Time Saved</strong> 📅<br>The total hours your legal team will save by automating repetitive tasks.</li>
+        <li><strong>Annual Cost Savings</strong> 💰<br>The financial savings from reducing manual work.</li>
+        <li><strong>Capacity Gain</strong> 📈<br>The equivalent number of full-time employees freed up to focus on high-value work.</li>
+      </ul>
+      <hr>
+
+      <h3>Assumptions Made:</h3>
+      <ul>
+        <li>The time per task is assumed to be consistent across tasks.</li>
+        <li>Harvey AI typically improves efficiency between 20% and 50% depending on the task.</li>
+        <li>Savings are calculated based on an annualized basis, assuming 52 working weeks per year.</li>
+        <li>Capacity gain is calculated based on a standard 40-hour work week.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const calculateButton = document.getElementById("calculateButton");
+      const results = document.getElementById("results");
+      const errorMessage = document.getElementById("error-message");
+
+      calculateButton.addEventListener("click", function () {
+        const numLawyers = parseInt(document.getElementById("numLawyers").value);
+        const hourlyRate = parseInt(document.getElementById("hourlyRate").value);
+        const hoursPerWeek = parseInt(document.getElementById("hoursPerWeek").value);
+        const efficiencyGain = parseInt(document.getElementById("efficiencyGain").value);
+
+        // Check for missing fields
+        if (!numLawyers || !hourlyRate || !hoursPerWeek || !efficiencyGain) {
+          errorMessage.textContent = "Please fill in all fields with valid numbers.";
+          results.innerHTML = "";
+          return;
+        }
+
+        errorMessage.textContent = "";
+
+        // Calculate annual time saved
+        const annualTimeSaved = numLawyers * hoursPerWeek * 52 * (efficiencyGain / 100);
+
+        // Calculate annual cost savings
+        const annualCostSavings = annualTimeSaved * hourlyRate;
+
+        // Calculate capacity gain (allow fractions)
+        const capacityGain = (annualTimeSaved / (40 * 52)).toFixed(1);
+
+        // Display results
+        results.innerHTML = `
+          <p>📅 <strong>Annual Time Saved:</strong> ${annualTimeSaved.toLocaleString()} hours</p>
+          <p>💰 <strong>Annual Cost Savings:</strong> $${annualCostSavings.toLocaleString()}</p>
+          <p>📈 <strong>Capacity Gain:</strong> ${capacityGain} FTEs</p>
+          <p class="note">*See the Info Box for help interpreting the results.</p>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>
